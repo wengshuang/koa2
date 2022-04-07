@@ -7,9 +7,14 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const cors = require('koa2-cors')
+
+
 const index = require('./routes/index')
 const users = require('./routes/users')
 const member = require('./routes/member')
+const tags = require('./routes/tags')
+const blogs = require('./routes/blogs')
+
 const koaJwt = require('koa-jwt')
 
 const API_PREFIX = '/react-koa'
@@ -57,6 +62,8 @@ app.use(async (ctx, next) => {
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 app.use(member.routes(), member.allowedMethods())
+app.use(tags.routes(), tags.allowedMethods())
+app.use(blogs.routes(), blogs.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
