@@ -1,7 +1,7 @@
-const { blogs, tags } = require('../models')
+const { blogs, tags, browserIp } = require('../models')
+const { db } = require('../models/member')
 
 const { findOne, create, find, findByIdAndDelete, update } = require('./crudUtil')
-
 
 const addBlog = async (ctx) => {
   const { tagId, title, content } = ctx.request.body
@@ -95,12 +95,33 @@ const updateBlog = async (ctx) => {
   }
 
 }
+// 增加浏览量
+const uploadViews = async (ctx) => {
+  try {
+    const { id } = ctx.query
+    const ip = ctx.request.ip
+    create(browserIp, { blogId: id, ip: ip.replace(/::ffff:/, '') })
+    update(blogs, { _id: id }, { $inc: { views: 1 } })
+    ctx.body = {
+      code: 200
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+// db.blogs.aggregate([{ "$lookup": { "from": "tags", "localField": "tagId", "foreignField": "_id", "as": "T" } }])
+
+
 
 // 获取blog详情
 const getBlogById = async (ctx) => {
   const { id } = ctx.query
   try {
+
     const res = await findOne(blogs, { _id: id })
+    // const b = await blogs.aggregate([{ "$lookup": { "from": "tags", "localField": "tagId", "foreignField": "_id", "as": "T" } }])
+    // console.log(b, 'b')
     if (res) {
       ctx.body = {
         code: 200,
@@ -122,5 +143,6 @@ module.exports = {
   getBlogs,
   delBlog,
   updateBlog,
-  getBlogById
+  getBlogById,
+  uploadViews
 }

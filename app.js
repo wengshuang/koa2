@@ -43,9 +43,6 @@ app.use(koaJwt({
   path: [
     /\/login/,
     /\/register/,
-    /\/string/,
-    /\/favicon.ico/,
-    /\/member\/add/
   ]
 }))
 // , /^\/users\/updatePassword/
