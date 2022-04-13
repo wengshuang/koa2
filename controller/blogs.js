@@ -42,7 +42,7 @@ const getBlogs = async (ctx) => {
   const start = (currentPage - 1) * pageSize
   await find(blogs, {
     title: new RegExp(title, 'i'), tagId: new RegExp(tagId, 'i')
-  }).skip(start).limit(pageSize).then((res) => {
+  }).skip(start).limit(pageSize).sort({ creatTime: -1 }).then((res) => {
     ctx.body = {
       code: 200,
       message: '查询成功',
