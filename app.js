@@ -14,7 +14,7 @@ const users = require('./routes/users')
 const member = require('./routes/member')
 const tags = require('./routes/tags')
 const blogs = require('./routes/blogs')
-
+const open = require('./routes/open')
 const koaJwt = require('koa-jwt')
 
 const API_PREFIX = '/react-koa'
@@ -43,6 +43,7 @@ app.use(koaJwt({
   path: [
     /\/login/,
     /\/register/,
+    /\/blogs-open/
   ]
 }))
 // , /^\/users\/updatePassword/
@@ -61,6 +62,7 @@ app.use(users.routes(), users.allowedMethods())
 app.use(member.routes(), member.allowedMethods())
 app.use(tags.routes(), tags.allowedMethods())
 app.use(blogs.routes(), blogs.allowedMethods())
+app.use(open.routes(), open.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
