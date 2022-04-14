@@ -8,7 +8,7 @@ router.prefix('/blogs-open')
 router.get('/blogs/getBlogs', blogsControl.getBlogs)
 router.get('/blogs/getBlogById', blogsControl.getBlogById)
 router.get('/tags/getTags', tagsControl.getAllTags)
-router.get('/blogs/uploadViews', control.uploadViews)
+router.get('/blogs/updateViews', blogsControl.updateViews)
 
 
 

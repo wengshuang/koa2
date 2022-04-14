@@ -2,7 +2,7 @@ const find = (model, params) => model.find(params)
 
 const findOne = (model, params) => model.findOne(params)
 
-const update = (model, where, params) => model.update(where, params)
+const updateOne = (model, where, params) => model.updateOne(where, params)
 
 
 
@@ -14,6 +14,6 @@ module.exports = {
   create,
   find,
   findOne,
-  update,
+  updateOne,
   findByIdAndDelete
 }

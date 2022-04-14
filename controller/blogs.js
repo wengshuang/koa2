@@ -1,7 +1,7 @@
 const { blogs, tags, browserIp } = require('../models')
 const { db } = require('../models/member')
 
-const { findOne, create, find, findByIdAndDelete, update } = require('./crudUtil')
+const { findOne, create, find, findByIdAndDelete, updateOne } = require('./crudUtil')
 
 const addBlog = async (ctx) => {
   const { tagId, title, content } = ctx.request.body
@@ -77,7 +77,7 @@ const delBlog = async (ctx) => {
 const updateBlog = async (ctx) => {
   const { id, title, content } = ctx.request.body
   try {
-    const res = await update(blogs, { _id: id }, { title, content })
+    const res = await updateOne(blogs, { _id: id }, { title, content })
     console.log(res, 'res')
     if (res) {
       ctx.body = {
@@ -96,14 +96,23 @@ const updateBlog = async (ctx) => {
 
 }
 // 增加浏览量
-const uploadViews = async (ctx) => {
+const updateViews = async (ctx) => {
   try {
     const { id } = ctx.query
     const ip = ctx.request.ip
-    create(browserIp, { blogId: id, ip: ip.replace(/::ffff:/, '') })
-    update(blogs, { _id: id }, { $inc: { views: 1 } })
-    ctx.body = {
-      code: 200
+    if (id) {
+      await create(browserIp, { blogId: id, ip })
+      const number = await find(browserIp, { blogId: id }).distinct('ip')
+      // console.log(number.length, 'number')
+      await updateOne(blogs, { _id: id }, { views: number.length })
+      ctx.body = {
+        code: 200
+      }
+    } else {
+      ctx.body = {
+        code: 201,
+        message: '参数错误'
+      }
     }
   } catch (e) {
     console.log(e)
@@ -144,5 +153,5 @@ module.exports = {
   delBlog,
   updateBlog,
   getBlogById,
-  uploadViews
+  updateViews
 }
