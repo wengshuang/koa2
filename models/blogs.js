@@ -16,7 +16,7 @@ const schema = new mongoose.Schema({
     type: String,
     required: true
   },
-  Views: {
+  views: {
     type: Number,
     default: 0
   },
