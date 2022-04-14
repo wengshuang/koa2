@@ -100,6 +100,11 @@ const updateViews = async (ctx) => {
   try {
     const { id } = ctx.query
     const ip = ctx.request.ip
+    let req = ctx.req;
+    // let clientIP = req.headers['x-forwarded-for'] ||
+    //   req.connection.remoteAddress ||
+    //   req.socket.remoteAddress ||
+    console.log(req.headers['x-forwarded-for'], req.connection.remoteAddress, req.socket.remoteAddress, 'ip')
     if (id) {
       await create(browserIp, { blogId: id, ip })
       const number = await find(browserIp, { blogId: id }).distinct('ip')
